@@ -1,0 +1,284 @@
+/*
+  Edit this file to customize the site's text and videos.
+  Drop your video files into the /videos folder using the exact file names
+  referenced below (or edit the "src" paths to match whatever you name them).
+*/
+
+window.SITE_CONFIG = {
+  brand: "KSECS",
+  brandFull: "Kurdistan Smart Emergency Corridor System",
+
+  cover: {
+    kicker: "Comprehensive Strategic & Technical Proposal",
+    kickerKu: "پرۆپۆزاڵی ستراتیژی و تەکنیکی",
+    titleEn: "Kurdistan Smart Emergency Corridor System",
+    titleKu: "سیستەمی زیرەکی کۆریدۆری هەنگاوی کوردستان",
+    tag: "KSECS",
+    subtitle: "A first-of-its-kind intelligent corridor that clears the road ahead of ambulances, fire vehicles, police, and government convoys — before they arrive.",
+    presentedTo: "H.E. Masrour Barzani — Prime Minister, Kurdistan Regional Government",
+    presentedBy: "Raman Kanan — Erbil, Kurdistan Region of Iraq",
+    tel: "+964 (0)454 573 7944",
+    date: "June 11, 2026",
+    confidential: "CONFIDENTIAL",
+    ctaLabel: "Begin the Presentation",
+  },
+
+  quickStats: [
+    { value: "$155K–$310K", label: "Pilot investment" },
+    { value: "$2.6M–$6.3M", label: "Full-region estimate" },
+    { value: "200–500", label: "Lives saved per year (est.)" },
+    { value: "30–50%", label: "Faster emergency response" },
+  ],
+
+  // Main proposal sections — one video each. Drop files into /videos with
+  // these exact names, or change "src" to match your own file names.
+  sections: [
+    {
+      id: "executive-summary",
+      number: "01",
+      title: "Executive Summary",
+      titleKu: "کورتەی کارپردازی",
+      summary: "KSECS is a first-of-its-kind intelligent infrastructure initiative, developed and designed entirely within the Kurdistan Region — integrating IoT, embedded systems, LoRa wireless communication, GPS tracking, and AI into a single system that clears the road ahead of ambulances, fire vehicles, police, and government convoys before they arrive.",
+      stats: [
+        { value: "$155K–$310K", label: "Pilot investment" },
+        { value: "$2.6M–$6.3M", label: "Full region estimate" },
+        { value: "2 km", label: "Erbil 100 Meter Road pilot" },
+        { value: "Jun 11, 2026", label: "Proposal date" },
+      ],
+      video: { src: "videos/01-executive-summary.mp4", poster: "" },
+    },
+    {
+      id: "the-crisis",
+      number: "02",
+      title: "The Crisis",
+      titleKu: "کرایسیسەکە",
+      summary: "Road traffic injuries are the leading cause of death globally for ages 5–29, killing roughly 1.19 million people a year — more than two every minute. In the Kurdistan Region, fatal crashes rose 83.8% and injuries rose 150.4% between 2011–2016, even as urbanization reached 84% of the population.",
+      stats: [
+        { value: "1.19M", label: "Global road deaths / year (WHO)" },
+        { value: "2,719", label: "Iraq traffic deaths, 2024" },
+        { value: "+83.8%", label: "KR fatal crashes, 2011–16" },
+        { value: "84%", label: "Kurdistan Region urbanization" },
+      ],
+      video: { src: "videos/02-the-crisis.mp4", poster: "" },
+    },
+    {
+      id: "science-of-response",
+      number: "03",
+      title: "The Science of Emergency Response",
+      titleKu: "زانستی گوازەوەی هەنگاوی",
+      summary: "Every minute of delay measurably costs lives: cardiac arrest survival drops 7–10% per minute without defibrillation, fire property loss rises 9.4% per minute, and 48% of road-accident deaths occur at the scene before treatment. Urban congestion is making emergency response times worse worldwide.",
+      stats: [
+        { value: "−7–10%", label: "Cardiac survival, per minute" },
+        { value: "+9.4%", label: "Fire loss, per minute delay" },
+        { value: "48%", label: "Road deaths occurring on-scene" },
+        { value: "+50%", label: "Of NYC's response-time growth" },
+      ],
+      video: { src: "videos/03-science-of-response.mp4", poster: "" },
+    },
+    {
+      id: "the-solution",
+      number: "04",
+      title: "KSECS: The Solution",
+      titleKu: "چارەسەرەکە",
+      summary: "KSECS creates a visible, automated, pre-cleared corridor ahead of every emergency vehicle using five integrated technology layers — vehicle GPS/LoRa units, a LoRaWAN network, an AI-assisted control platform, smart LED road studs, and smart beacon poles — with a color protocol giving drivers instant visual identification of the approaching vehicle type.",
+      stats: [
+        { value: "5", label: "Integrated technology layers" },
+        { value: "300 m", label: "Advance driver warning" },
+        { value: "100%", label: "Automated — no manual control" },
+        { value: "72 hr", label: "Solar battery autonomy" },
+      ],
+      video: { src: "videos/04-the-solution.mp4", poster: "" },
+    },
+    {
+      id: "technical-architecture",
+      number: "05",
+      title: "Technical Architecture",
+      titleKu: "تەکنیکی دیزاین",
+      summary: "A five-layer, publish–subscribe event architecture carries an emergency activation from the vehicle through an encrypted LoRaWAN mesh to the control platform and out to road infrastructure in under 8 seconds by design — with real testing showing first-stud activation in roughly 550 milliseconds.",
+      stats: [
+        { value: "<8s", label: "Design target latency" },
+        { value: "~550ms", label: "Achieved in testing" },
+        { value: "AES-128", label: "End-to-end encryption" },
+        { value: "10 km", label: "LoRa gateway range" },
+      ],
+      video: { src: "videos/05-technical-architecture.mp4", poster: "" },
+    },
+    {
+      id: "pilot-project",
+      number: "06",
+      title: "Pilot Project",
+      titleKu: "پرۆژەی پایلۆت",
+      summary: "The pilot deploys on Erbil's 100 Meter Road, a 2 km corridor connecting major hospitals to the city center and heavily used by government convoys — chosen for traffic density, emergency-route relevance, infrastructure readiness, and public visibility.",
+      stats: [
+        { value: "40", label: "Smart LED road studs" },
+        { value: "4", label: "Smart beacon poles" },
+        { value: "2", label: "LoRa gateways (primary + backup)" },
+        { value: "6", label: "GPS-equipped vehicles" },
+      ],
+      video: { src: "videos/06-pilot-project.mp4", poster: "" },
+    },
+    {
+      id: "budget-framework",
+      number: "07",
+      title: "Budget Framework",
+      titleKu: "بنەمای بودجە",
+      summary: "The Erbil pilot is estimated at USD 155,000–310,000, covering hardware, installation, testing, and a 10% contingency reserve. Full regional coverage across Erbil, Sulaymaniyah, Duhok, and key urban corridors is projected at USD 2.6M–6.3M over 36 months, phased so each stage is validated before the next begins.",
+      stats: [
+        { value: "$155K–$310K", label: "Pilot phase" },
+        { value: "$2.6M–$6.3M", label: "Full region, 36 months" },
+        { value: "15–30x", label: "Projected social ROI" },
+        { value: "30–70%", label: "Cost cut via solar + LoRa" },
+      ],
+      video: { src: "videos/07-budget-framework.mp4", poster: "" },
+    },
+    {
+      id: "international-comparison",
+      number: "08",
+      title: "International Comparison",
+      titleKu: "بەراوردی نێودەوڵەتی",
+      summary: "Dubai and Abu Dhabi have shown 30–40% reductions in emergency response times using intelligent traffic systems costing hundreds of millions of dollars. KSECS targets comparable outcomes at a fraction of the cost — no similar visual emergency corridor system exists anywhere in Iraq or its neighboring countries.",
+      stats: [
+        { value: "−30%", label: "Dubai ITS response time (AED 590M)" },
+        { value: "−40%", label: "Abu Dhabi, over 3 years" },
+        { value: "~1/500th", label: "Of Dubai's cost, for the pilot" },
+        { value: "1st", label: "System of its kind in the region" },
+      ],
+      video: { src: "videos/08-international-comparison.mp4", poster: "" },
+    },
+    {
+      id: "expected-benefits",
+      number: "09",
+      title: "Expected Benefits",
+      titleKu: "سوودمەندیەکانی چاوەڕوانکراو",
+      summary: "At full deployment, KSECS is projected to reduce emergency response times by 30–50%, increase cardiac arrest survival by up to 40%, and save an estimated 200–500 lives per year region-wide — while positioning Kurdistan as a smart-infrastructure leader aligned with KRG Vision 2030.",
+      stats: [
+        { value: "30–50%", label: "Faster emergency response" },
+        { value: "+40%", label: "Cardiac arrest survival" },
+        { value: "200–500", label: "Lives saved / year (est.)" },
+        { value: "−20–35%", label: "Fire damage reduction" },
+      ],
+      video: { src: "videos/09-expected-benefits.mp4", poster: "" },
+    },
+    {
+      id: "risk-assessment",
+      number: "10",
+      title: "Risk Assessment & Mitigation",
+      titleKu: "هەڵسەنگاندنی مەترسی",
+      summary: "KSECS is built on fail-safe design throughout: every component defaults to the safest possible state on failure, from automatic gateway failover in 30 seconds to vehicles falling back to conventional siren-only operation if communication is lost entirely — never worse than the status quo.",
+      stats: [
+        { value: "30s", label: "Automatic gateway failover" },
+        { value: "4 hr", label: "UPS backup autonomy" },
+        { value: "STANDALONE", label: "Fallback mode on comms loss" },
+        { value: "10%", label: "Budget contingency reserve" },
+      ],
+      video: { src: "videos/10-risk-assessment.mp4", poster: "" },
+    },
+    {
+      id: "governance-structure",
+      number: "11",
+      title: "Governance Structure",
+      titleKu: "پێکھاتەی بەرپرسایەتی",
+      summary: "Oversight spans the Council of Ministers down through the Ministry of Interior, General Directorate of Traffic, Ministry of Health, Civil Defense, security agencies, and the Municipality of Erbil — each with a defined role across policy, operations, technical management, emergency integration, and infrastructure.",
+      stats: [
+        { value: "6", label: "Governance levels defined" },
+        { value: "PM Office", label: "Strategic oversight" },
+        { value: "1", label: "Joint technical committee proposed" },
+      ],
+      video: { src: "videos/11-governance-structure.mp4", poster: "" },
+    },
+    {
+      id: "call-to-action",
+      number: "12",
+      title: "Call to Action",
+      titleKu: "داوا لە حکومەت",
+      summary: "The proposal requests official project approval, authorization to begin the Erbil pilot, inter-ministerial coordination, initial funding of $155,000–$310,000, and formation of a joint technical committee — with pilot results driving a Phase 2 regional expansion decision by Month 11.",
+      stats: [
+        { value: "11 mo", label: "Pilot-to-decision timeline" },
+        { value: "$155K–$310K", label: "Initial funding requested" },
+        { value: "5", label: "Institutional approvals requested" },
+      ],
+      video: { src: "videos/12-call-to-action.mp4", poster: "" },
+    },
+  ],
+
+  // Optional deep-dive appendices — each can carry its own video too.
+  appendices: [
+    {
+      id: "case-studies",
+      letter: "A",
+      title: "Case Studies",
+      titleKu: "چیرۆکی ڕاستەقینەی ژیان",
+      summary: "Real documented cases — from Baghdad ambulances blocked in traffic, to Erbil's new RameeGo GPS dispatch system, to Dubai and Abu Dhabi's measured response-time gains — showing both the human cost of the current gap and proof that smart systems save lives.",
+      video: { src: "videos/a-case-studies.mp4", poster: "" },
+    },
+    {
+      id: "operations-research",
+      letter: "B",
+      title: "Operations Research Model",
+      titleKu: "مۆدیلی تایبەتمەندی",
+      summary: "A formal mathematical model of emergency response time, a queueing-theory analysis of corridor capacity, and a conservative lives-saved calculation built from Kurdistan Region census and medical-literature data.",
+      video: { src: "videos/b-operations-research.mp4", poster: "" },
+    },
+    {
+      id: "ai-in-ksecs",
+      letter: "C",
+      title: "Artificial Intelligence in KSECS",
+      titleKu: "زیرەکی دەستکرد",
+      summary: "The pilot runs as a deterministic, rule-based system, but KSECS is architected to grow into predictive route optimization, hotspot prediction, and eventually deep reinforcement learning-based corridor management as operational data accumulates.",
+      video: { src: "videos/c-ai-in-ksecs.mp4", poster: "" },
+    },
+    {
+      id: "local-manufacturing",
+      letter: "D",
+      title: "Local Manufacturing & Regional Development",
+      titleKu: "بەرهەمهێنانی نەتەوەیی",
+      summary: "A progressive localization strategy — from steel fabrication and mounting hardware in Phase 1 to full electronics assembly by Year 3 — is projected to create 50–200 direct manufacturing jobs and position Kurdistan as a regional technology exporter within 5 years.",
+      video: { src: "videos/d-local-manufacturing.mp4", poster: "" },
+    },
+  ],
+
+  references: {
+    heading: "Sources & References",
+    note: "A curated selection. The full bibliography with 40+ citations is available in the source proposal document.",
+    groups: [
+      {
+        heading: "Academic & Peer-Reviewed Research",
+        items: [
+          "Mohammed, Jaff, Schrock (2019) — Transportation Research Interdisciplinary Perspectives, 2:100029. KR traffic safety trends 2011–2016.",
+          "NIH StatPearls / NCBI (2025) — Defibrillation. Survival declines ~10% per minute without intervention.",
+          "PMC11872269 / Circulation (2025) — Delay to first shock and survival, n=3,723 patients.",
+          "arXiv:2502.16449 (2025) — Multi-agent Deep Reinforcement Learning for emergency vehicle passage.",
+          "arXiv:2603.22315 (2025) — Emergency Preemption Without Online Exploration.",
+          "ScienceDirect, J. Transport & Health (2020) — Emergency response times and crash risk, Costa Rica.",
+        ],
+      },
+      {
+        heading: "Government & Official Sources",
+        items: [
+          "World Health Organization — Global Status Report on Road Safety 2023.",
+          "Kurdistan Ministry of Interior / Rudaw (2026) — Traffic fatalities down 60% over five years.",
+          "KRG Ministry of Planning (2024) — Official Kurdistan Region census results.",
+          "Kurdistan24 (2025) — Erbil smart ambulance dispatch (RameeGo) launch.",
+          "UNDP Iraq (2020) — KRG Vision 2030 partnership.",
+        ],
+      },
+      {
+        heading: "Technology & Industry Sources",
+        items: [
+          "LoRa Alliance (2025) — 125 million LoRaWAN end devices deployed globally.",
+          "INRIX (2024) — Global Traffic Scorecard.",
+          "Gulf News (2022) — Dubai ITS: AED 590M center, 30% response-time reduction.",
+          "Khaleej Times (2025) — Abu Dhabi smart road sensors, 40% reduction over 3 years.",
+        ],
+      },
+    ],
+  },
+
+  closing: {
+    title: "Every minute saved is a life preserved.",
+    message: "KSECS is more than a transportation project — it is a commitment to the lives of the people of Kurdistan.",
+    presentedBy: "Raman Kanan — Erbil, Kurdistan Region of Iraq",
+    tel: "+964 (0)454 573 7944",
+    date: "June 11, 2026",
+  },
+};
