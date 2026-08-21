@@ -126,7 +126,32 @@
       iframe.setAttribute("loading", "lazy");
       iframe.dataset.src = video.src;
       // Don't set src yet; lazy-load it when it scrolls near viewport
+      
+      // Custom fullscreen elements
+      const fsOverlay = document.createElement("button");
+      fsOverlay.className = "custom-fs-overlay";
+      fsOverlay.setAttribute("aria-label", "Enter fullscreen");
+      
+      const fsClose = document.createElement("button");
+      fsClose.className = "custom-fs-close";
+      fsClose.setAttribute("aria-label", "Exit fullscreen");
+      fsClose.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      
+      fsOverlay.addEventListener("click", (e) => {
+        e.stopPropagation();
+        frame.classList.add("is-custom-fs");
+        // Load iframe if it hasn't loaded yet
+        if (!iframe.src) iframe.src = iframe.dataset.src;
+      });
+      
+      fsClose.addEventListener("click", (e) => {
+        e.stopPropagation();
+        frame.classList.remove("is-custom-fs");
+      });
+
       frame.appendChild(iframe);
+      frame.appendChild(fsOverlay);
+      frame.appendChild(fsClose);
 
       // Lazy load
       const lazyObserver = new IntersectionObserver(
