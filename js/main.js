@@ -264,11 +264,28 @@
         markBtn.classList.add("is-marked");
       });
 
+      // "Open in Google Drive" button — opens the video in Drive's native
+      // player which works much better on mobile than the embedded iframe.
+      const driveViewUrl = video.src.replace("/preview", "/view");
+      const openDriveBtn = document.createElement("a");
+      openDriveBtn.className = "open-drive-btn";
+      openDriveBtn.href = driveViewUrl;
+      openDriveBtn.target = "_blank";
+      openDriveBtn.rel = "noopener noreferrer";
+      openDriveBtn.innerHTML =
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>' +
+          '<polyline points="15 3 21 3 21 9"/>' +
+          '<line x1="10" y1="14" x2="21" y2="3"/>' +
+        '</svg>' +
+        '<span>Open in Google Drive</span>';
+
       card.appendChild(frame);
       card.appendChild(badge);
       // Button row for drive embeds
       const btnRow = document.createElement("div");
       btnRow.className = "video-card-actions";
+      btnRow.appendChild(openDriveBtn);
       btnRow.appendChild(markBtn);
       btnRow.appendChild(copyBtn);
       card.appendChild(btnRow);
