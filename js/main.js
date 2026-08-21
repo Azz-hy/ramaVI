@@ -126,7 +126,23 @@
       iframe.setAttribute("loading", "lazy");
       iframe.dataset.src = video.src;
       // Don't set src yet; lazy-load it when it scrolls near viewport
+      
+      // Mobile tap-to-open overlay (visible only on mobile via CSS)
+      const mobileOverlay = document.createElement("a");
+      mobileOverlay.className = "mobile-drive-overlay";
+      mobileOverlay.href = video.src.replace("/preview", "/view");
+      mobileOverlay.target = "_blank";
+      mobileOverlay.rel = "noopener noreferrer";
+      mobileOverlay.innerHTML =
+        '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent); margin-bottom: 0.5rem;">' +
+          '<circle cx="12" cy="12" r="10"/>' +
+          '<polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>' +
+        '</svg>' +
+        '<span style="font-weight: 600; font-size: 1.05rem; color: var(--ink);">Tap to Play</span>' +
+        '<span style="font-size: 0.8rem; color: var(--ink-dim);">Opens in Google Drive</span>';
+
       frame.appendChild(iframe);
+      frame.appendChild(mobileOverlay);
 
       // Lazy load
       const lazyObserver = new IntersectionObserver(
