@@ -728,10 +728,20 @@ main {
 }
 
 /* ---------- Drive iframe embed ---------- */
+
+/* Drive embeds: remove overflow:hidden so Google's player controls
+   (play, pause, maximize, timeline) aren't clipped by border-radius.
+   The iframe itself handles its own bounds. */
+.drive-embed-card .video-frame {
+  overflow: visible;
+  border-radius: 8px;
+}
+
 .video-frame .drive-iframe {
   width: 100%;
   height: 100%;
   border: none;
+  border-radius: 8px;
   display: block;
   background: #000;
 }
@@ -923,6 +933,11 @@ main {
   border-radius: 10px;
 }
 
+/* Drive embeds inside appendices: keep controls unclipped */
+.appendix-item .drive-embed-card .video-frame {
+  overflow: visible;
+}
+
 .appendix-item .watched-badge {
   top: 1.15rem;
   right: 1.15rem;
@@ -990,6 +1005,11 @@ main {
 
 .documentary-item .video-frame {
   border-radius: 10px;
+}
+
+/* Drive embeds inside documentaries: keep controls unclipped */
+.documentary-item .drive-embed-card .video-frame {
+  overflow: visible;
 }
 
 .documentary-item .watched-badge {
@@ -1153,5 +1173,47 @@ main {
   .video-card {
     padding: 0.65rem;
     border-radius: 16px;
+  }
+
+  /* Drive embeds on mobile: ZERO border-radius and no
+     overflow clipping anywhere, so Google Drive's player
+     controls (fullscreen in bottom-right corner, open-in-new-tab
+     in top-right corner, play/pause at bottom) are never cut. */
+  .drive-embed-card {
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  .drive-embed-card .video-frame {
+    aspect-ratio: auto;
+    min-height: 280px;
+    height: 56vw;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .drive-embed-card .video-frame .drive-iframe {
+    border-radius: 0;
+  }
+
+  .drive-embed-card .video-card-actions {
+    padding: 0.5rem 0.65rem 0.65rem;
+  }
+
+  .drive-embed-card .video-label {
+    padding: 0.5rem 0.65rem 0.2rem;
+  }
+
+  .drive-embed-card .watched-badge {
+    top: 0.6rem;
+    right: 0.6rem;
+  }
+
+  /* Multi-video grid goes single-column on mobile */
+  .multi-video-grid {
+    grid-template-columns: 1fr;
   }
 }
