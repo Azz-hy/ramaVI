@@ -132,14 +132,9 @@
       fsOverlay.className = "custom-fs-overlay";
       fsOverlay.setAttribute("aria-label", "Enter fullscreen");
       
-      const fsClose = document.createElement("button");
-      fsClose.className = "custom-fs-close";
-      fsClose.setAttribute("aria-label", "Exit fullscreen");
-      fsClose.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-      
       fsOverlay.addEventListener("click", (e) => {
         e.stopPropagation();
-
+        
         // Stop all other Drive videos by reloading their iframes
         document.querySelectorAll(".drive-iframe").forEach(otherIframe => {
           if (otherIframe !== iframe && otherIframe.src) {
@@ -149,57 +144,12 @@
           }
         });
 
-        const nativeFs = frame.requestFullscreen || frame.webkitRequestFullscreen || frame.mozRequestFullScreen || frame.msRequestFullscreen;
-
-        function useCustomFallback() {
-          frame.classList.add("is-custom-fs");
-        }
-
-        if (nativeFs) {
-          try {
-            const result = nativeFs.call(frame);
-            if (result && typeof result.then === "function") {
-              result.catch(useCustomFallback);
-            }
-          } catch (err) {
-            useCustomFallback();
-          }
-        } else {
-          useCustomFallback();
-        }
-
-        // Some Android/in-app browsers silently no-op requestFullscreen —
-        // no error, no promise rejection, just nothing happens.
-        // So verify the actual state shortly after and fall back if it didn't take.
-        setTimeout(() => {
-          const isNowFullscreen =
-            document.fullscreenElement || document.webkitFullscreenElement ||
-            document.mozFullScreenElement || document.msFullscreenElement;
-          if (!isNowFullscreen && !frame.classList.contains("is-custom-fs")) {
-            useCustomFallback();
-          }
-        }, 250);
-
-        // Load iframe if it hasn't loaded yet
-        if (!iframe.src) iframe.src = iframe.dataset.src;
-      });
-
-      fsClose.addEventListener("click", (e) => {
-        e.stopPropagation();
-        frame.classList.remove("is-custom-fs");
-        
-        // Also ensure native fullscreen is exited if it was successful
-        const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-        const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-        
-        if (exitFs && isFullscreen) {
-          exitFs.call(document);
-        }
+        // Navigate to the new dedicated fullscreen video page on the same domain
+        window.location.href = `video.html?src=${encodeURIComponent(iframe.dataset.src)}`;
       });
 
       frame.appendChild(iframe);
       frame.appendChild(fsOverlay);
-      frame.appendChild(fsClose);
 
       // Lazy load
       const lazyObserver = new IntersectionObserver(

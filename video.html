@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Ensure mobile devices scale correctly and don't allow zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Video Player</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    
+    #video-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Auto-rotate for mobile portrait to force landscape viewing */
+    @media (max-width: 900px) and (orientation: portrait) {
+      #video-container {
+        width: 100vh;
+        height: 100vw;
+        transform: rotate(90deg);
+        transform-origin: top left;
+        position: absolute;
+        top: 0;
+        left: 100vw;
+      }
+    }
+
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .close-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Close button acts like the "ESC" or return to first page -->
+  <button class="close-btn" id="closeBtn" aria-label="Close Video">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <div id="video-container">
+    <iframe id="videoFrame" allow="autoplay; encrypted-media; fullscreen" allowfullscreen="true" frameborder="0"></iframe>
+  </div>
+
+  <script>
+    // Extract the video URL from the query string (e.g., video.html?src=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoSrc = urlParams.get('src');
+
+    if (videoSrc) {
+      document.getElementById('videoFrame').src = videoSrc;
+    } else {
+      document.getElementById('video-container').innerHTML = '<p style="color:white;text-align:center;">No video source provided.</p>';
+    }
+
+    // Go back to the previous page when the close button is clicked
+    document.getElementById('closeBtn').addEventListener('click', () => {
+      // If there is history, go back. Otherwise, go to index.html as a fallback
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Also close on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('closeBtn').click();
+      }
+    });
+  </script>
+</body>
+</html>
