@@ -1204,58 +1204,70 @@ main {
     border-radius: 16px;
   }
 
-  /* Drive embeds on mobile: the embedded Google Drive player's
-     controls are too large for small screens. Make the iframe
-     taller and promote "Open in Google Drive" as the primary action. */
+  /* ========== DRIVE EMBEDS ON MOBILE ==========
+     Google Drive's embedded player controls are unusable on mobile
+     (overlapping, too small for touch). Hide the iframe entirely and
+     show a large tap-to-open placeholder that opens the video in
+     Drive's native player, which works great on all phones. */
   .drive-embed-card {
-    padding: 0;
-    border-radius: 0;
-    border: none;
+    padding: 0.5rem;
+    border-radius: 14px;
     overflow: visible;
-    box-shadow: none;
+  }
+
+  /* Hide the iframe on mobile — it's unusable */
+  .drive-embed-card .video-frame .drive-iframe {
+    display: none;
+  }
+
+  /* Show the mobile tap overlay instead */
+  .drive-embed-card .mobile-drive-overlay {
+    display: flex;
   }
 
   .drive-embed-card .video-frame {
-    aspect-ratio: auto;
-    min-height: 300px;
-    height: 70vw;
-    border-radius: 0;
-    overflow: visible;
-  }
-
-  .drive-embed-card .video-frame .drive-iframe {
-    border-radius: 0;
+    aspect-ratio: 16 / 9;
+    min-height: unset;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
   }
 
   .drive-embed-card .video-card-actions {
-    padding: 0.65rem;
+    padding: 0.5rem 0.15rem;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  /* Make "Open in Google Drive" button the primary action on mobile */
+  /* Make "Open in Google Drive" button the big, primary action on mobile */
   .drive-embed-card .open-drive-btn {
     width: 100%;
     justify-content: center;
-    padding: 0.85rem 1.2rem;
+    padding: 1rem 1.2rem;
     background: var(--accent);
     border-color: var(--accent);
     color: #04211f;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     font-weight: 700;
     border-radius: 12px;
     order: -1;
+    /* Minimum touch target per Apple HIG (44pt) */
+    min-height: 48px;
   }
 
-  .drive-embed-card .open-drive-btn:hover {
+  .drive-embed-card .open-drive-btn:hover,
+  .drive-embed-card .open-drive-btn:active {
     background: var(--accent);
     border-color: var(--accent);
     color: #04211f;
+    transform: none;
   }
 
   .drive-embed-card .mark-watched-btn,
   .drive-embed-card .copy-link-btn {
     flex: 1;
+    min-height: 44px;
+    justify-content: center;
   }
 
   /* Sub-row for secondary buttons */
