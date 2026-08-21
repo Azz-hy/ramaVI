@@ -619,13 +619,19 @@ main {
 .video-frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
   border-radius: 13px;
   overflow: hidden;
   background: #000;
 }
 
-.video-frame video {
+.video-frame video,
+.video-frame iframe,
+.video-frame .drive-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: block;
@@ -738,12 +744,8 @@ main {
 }
 
 .video-frame .drive-iframe {
-  width: 100%;
-  height: 100%;
   border: none;
   border-radius: 8px;
-  display: block;
-  background: #000;
 }
 
 /* Video label (shown for multi-video appendices like case studies) */
@@ -1214,9 +1216,10 @@ main {
   }
 
   .drive-embed-card .video-frame {
-    aspect-ratio: 16 / 9;
+    /* Increase padding to give Google Drive player controls room on mobile */
+    padding-bottom: 70%; 
+    height: 0;
     min-height: unset;
-    height: auto;
     border-radius: 0;
     overflow: visible;
   }
