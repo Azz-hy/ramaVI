@@ -139,7 +139,7 @@
       
       fsOverlay.addEventListener("click", (e) => {
         e.stopPropagation();
-        
+
         // Stop all other Drive videos by reloading their iframes
         document.querySelectorAll(".drive-iframe").forEach(otherIframe => {
           if (otherIframe !== iframe && otherIframe.src) {
@@ -149,31 +149,52 @@
           }
         });
 
-        const isIPhone = /iPhone|iPod/.test(navigator.userAgent);
         const nativeFs = frame.requestFullscreen || frame.webkitRequestFullscreen || frame.mozRequestFullScreen || frame.msRequestFullscreen;
-        
-        // Try Native HTML5 Fullscreen API, but skip for iPhone since Apple blocks it on divs
-        if (!isIPhone && nativeFs) {
-          try {
-            const promise = nativeFs.call(frame);
-            if (promise !== undefined) {
-              promise.catch(() => frame.classList.add("is-custom-fs"));
-            }
-          } catch(err) {
-            frame.classList.add("is-custom-fs");
-          }
-        } else {
-          // Fallback to custom CSS fullscreen for iPhone and unsupported browsers
+
+        function useCustomFallback() {
           frame.classList.add("is-custom-fs");
         }
-        
+
+        if (nativeFs) {
+          try {
+            const result = nativeFs.call(frame);
+            if (result && typeof result.then === "function") {
+              result.catch(useCustomFallback);
+            }
+          } catch (err) {
+            useCustomFallback();
+          }
+        } else {
+          useCustomFallback();
+        }
+
+        // Some Android/in-app browsers silently no-op requestFullscreen —
+        // no error, no promise rejection, just nothing happens.
+        // So verify the actual state shortly after and fall back if it didn't take.
+        setTimeout(() => {
+          const isNowFullscreen =
+            document.fullscreenElement || document.webkitFullscreenElement ||
+            document.mozFullScreenElement || document.msFullscreenElement;
+          if (!isNowFullscreen && !frame.classList.contains("is-custom-fs")) {
+            useCustomFallback();
+          }
+        }, 250);
+
         // Load iframe if it hasn't loaded yet
         if (!iframe.src) iframe.src = iframe.dataset.src;
       });
-      
+
       fsClose.addEventListener("click", (e) => {
         e.stopPropagation();
         frame.classList.remove("is-custom-fs");
+        
+        // Also ensure native fullscreen is exited if it was successful
+        const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+        
+        if (exitFs && isFullscreen) {
+          exitFs.call(document);
+        }
       });
 
       frame.appendChild(iframe);
