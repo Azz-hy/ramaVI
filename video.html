@@ -82,14 +82,26 @@
   </div>
 
   <script>
-    // Extract the video URL from the query string (e.g., video.html?src=...)
+    // Extract the video URL and ID from the query string
     const urlParams = new URLSearchParams(window.location.search);
     const videoSrc = urlParams.get('src');
+    const targetId = urlParams.get('id');
 
     if (videoSrc) {
       document.getElementById('videoFrame').src = videoSrc;
     } else {
       document.getElementById('video-container').innerHTML = '<p style="color:white;text-align:center;">No video source provided.</p>';
+    }
+
+    // Automatically mark as watched in localStorage since they opened it
+    if (targetId) {
+      try {
+        let watched = new Set();
+        const saved = localStorage.getItem("watched_videos");
+        if (saved) watched = new Set(JSON.parse(saved));
+        watched.add(targetId);
+        localStorage.setItem("watched_videos", JSON.stringify([...watched]));
+      } catch (e) {}
     }
 
     // Go back to the previous page when the close button is clicked

@@ -95,19 +95,15 @@
   function buildVideoCard(video, targetId) {
     const card = document.createElement("div");
     card.className = "video-card";
-    
     let isDrive = video.type === "drive";
 
-    // --- MAGICAL CONVERSION FOR TRUE NATIVE EXPERIENCE ---
-    // Extract the Google Drive ID and convert it to a direct video stream.
-    // This allows us to completely bypass Google Drive's buggy iframe player
-    // and use the standard Apple/Android native full-screen video player instead!
-    if (isDrive) {
-      const match = video.src.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        video.src = `https://drive.google.com/uc?export=download&id=${match[1]}`;
-        isDrive = false; // Treat as a flawless native <video> from now on
-      }
+    // Give the video card its own anchor so links scroll directly to the player
+    const videoAnchorId = targetId ? "video-" + targetId : "";
+    if (videoAnchorId) card.id = videoAnchorId;
+
+    if (targetId) {
+      watchTotal++;
+      if (watched.has(targetId)) card.classList.add("is-watched");
     }
 
     if (isDrive) {
@@ -154,7 +150,7 @@
         });
 
         // Navigate to the new dedicated fullscreen video page on the same domain
-        window.location.href = `video.html?src=${encodeURIComponent(iframe.dataset.src)}`;
+        window.location.href = `video.html?src=${encodeURIComponent(iframe.dataset.src)}&id=${encodeURIComponent(targetId || "")}`;
       });
 
       frame.appendChild(iframe);
@@ -196,13 +192,6 @@
           vid.load();
         }
         vid.play();
-
-        // Automatically trigger true native fullscreen (pop-out) for the ultimate clean experience
-        if (vid.requestFullscreen) {
-          vid.requestFullscreen();
-        } else if (vid.webkitEnterFullscreen) {
-          vid.webkitEnterFullscreen(); // iPhone native full screen video player!
-        }
       });
       vid.addEventListener("play", () => {
         overlay.classList.add("is-hidden");
@@ -595,4 +584,26 @@
   }
   window.addEventListener("scroll", updateProgress, { passive: true });
   updateProgress();
+
+  // Re-sync watched status when returning from video.html (bfcache support)
+  window.addEventListener("pageshow", () => {
+    try {
+      const saved = localStorage.getItem("watched_videos");
+      if (saved) {
+        const currentWatched = new Set(JSON.parse(saved));
+        document.querySelectorAll(".video-card").forEach(card => {
+          const id = card.id ? card.id.replace("video-", "") : null;
+          if (id && currentWatched.has(id) && !card.classList.contains("is-watched")) {
+            card.classList.add("is-watched");
+            const markBtn = card.querySelector(".mark-watched-btn");
+            if (markBtn) {
+              markBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Watched</span>';
+              markBtn.classList.add("is-marked");
+            }
+          }
+        });
+      }
+    } catch(err) {}
+  });
+
 })();
