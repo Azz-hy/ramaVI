@@ -1216,8 +1216,8 @@ main {
   }
 
   .drive-embed-card .video-frame {
-    /* Increase padding to give Google Drive player controls room on mobile */
-    padding-bottom: 75%; 
+    /* Dynamically calculate height: 16:9 aspect ratio for the video + 80px fixed space for Drive controls */
+    padding-bottom: calc(56.25% + 80px); 
     height: 0;
     min-height: unset;
     border-radius: 0;
