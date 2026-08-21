@@ -140,17 +140,30 @@
       fsOverlay.addEventListener("click", (e) => {
         e.stopPropagation();
         
-        // Try Native HTML5 Fullscreen API first
-        if (frame.requestFullscreen) {
-          frame.requestFullscreen();
-        } else if (frame.webkitRequestFullscreen) { /* Safari */
-          frame.webkitRequestFullscreen();
-        } else if (frame.mozRequestFullScreen) { /* Firefox */
-          frame.mozRequestFullScreen();
-        } else if (frame.msRequestFullscreen) { /* IE11 */
-          frame.msRequestFullscreen();
+        // Stop all other Drive videos by reloading their iframes
+        document.querySelectorAll(".drive-iframe").forEach(otherIframe => {
+          if (otherIframe !== iframe && otherIframe.src) {
+            const currentSrc = otherIframe.src;
+            otherIframe.src = "about:blank";
+            setTimeout(() => { otherIframe.src = currentSrc; }, 50);
+          }
+        });
+
+        const isIPhone = /iPhone|iPod/.test(navigator.userAgent);
+        const nativeFs = frame.requestFullscreen || frame.webkitRequestFullscreen || frame.mozRequestFullScreen || frame.msRequestFullscreen;
+        
+        // Try Native HTML5 Fullscreen API, but skip for iPhone since Apple blocks it on divs
+        if (!isIPhone && nativeFs) {
+          try {
+            const promise = nativeFs.call(frame);
+            if (promise !== undefined) {
+              promise.catch(() => frame.classList.add("is-custom-fs"));
+            }
+          } catch(err) {
+            frame.classList.add("is-custom-fs");
+          }
         } else {
-          // Fallback to custom CSS fullscreen if native is unsupported (e.g. iOS Safari)
+          // Fallback to custom CSS fullscreen for iPhone and unsupported browsers
           frame.classList.add("is-custom-fs");
         }
         
