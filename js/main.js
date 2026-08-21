@@ -140,17 +140,13 @@
       fsOverlay.addEventListener("click", (e) => {
         e.stopPropagation();
         
-        // Stop all other Drive videos by reloading their iframes
-        document.querySelectorAll(".drive-iframe").forEach(otherIframe => {
-          if (otherIframe !== iframe && otherIframe.src) {
-            const currentSrc = otherIframe.src;
-            otherIframe.src = "about:blank";
-            setTimeout(() => { otherIframe.src = currentSrc; }, 50);
-          }
-        });
+        // Mark as watched automatically since they clicked to watch it
+        if (targetId) {
+          markWatched(targetId, card);
+        }
 
-        // Navigate to the new dedicated fullscreen video page on the same domain
-        window.location.href = `video.html?src=${encodeURIComponent(iframe.dataset.src)}&id=${encodeURIComponent(targetId || "")}`;
+        // Open the Google Drive URL directly in a new tab
+        window.open(iframe.dataset.src, "_blank");
       });
 
       frame.appendChild(iframe);
