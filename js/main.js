@@ -139,7 +139,21 @@
       
       fsOverlay.addEventListener("click", (e) => {
         e.stopPropagation();
-        frame.classList.add("is-custom-fs");
+        
+        // Try Native HTML5 Fullscreen API first
+        if (frame.requestFullscreen) {
+          frame.requestFullscreen();
+        } else if (frame.webkitRequestFullscreen) { /* Safari */
+          frame.webkitRequestFullscreen();
+        } else if (frame.mozRequestFullScreen) { /* Firefox */
+          frame.mozRequestFullScreen();
+        } else if (frame.msRequestFullscreen) { /* IE11 */
+          frame.msRequestFullscreen();
+        } else {
+          // Fallback to custom CSS fullscreen if native is unsupported (e.g. iOS Safari)
+          frame.classList.add("is-custom-fs");
+        }
+        
         // Load iframe if it hasn't loaded yet
         if (!iframe.src) iframe.src = iframe.dataset.src;
       });

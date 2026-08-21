@@ -819,6 +819,31 @@ main {
   border-radius: 0 !important;
 }
 
+/* Native Fullscreen API styles */
+.video-frame:fullscreen {
+  padding-bottom: 0 !important;
+  height: 100% !important;
+  background: #000 !important;
+  border-radius: 0 !important;
+}
+
+.video-frame:-webkit-full-screen {
+  padding-bottom: 0 !important;
+  height: 100% !important;
+  background: #000 !important;
+  border-radius: 0 !important;
+}
+
+.video-frame:fullscreen .custom-fs-overlay,
+.video-frame:-webkit-full-screen .custom-fs-overlay {
+  display: none;
+}
+
+.video-frame:fullscreen .drive-iframe,
+.video-frame:-webkit-full-screen .drive-iframe {
+  border-radius: 0 !important;
+}
+
 /* Video label (shown for multi-video appendices like case studies) */
 .video-label {
   font-family: var(--mono);
