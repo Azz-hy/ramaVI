@@ -746,21 +746,6 @@ main {
   background: #000;
 }
 
-/* Mobile drive overlay (hidden on desktop, visible on mobile) */
-.mobile-drive-overlay {
-  display: none;
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.03);
-  text-decoration: none;
-  border-radius: 8px;
-}
-
 /* Video label (shown for multi-video appendices like case studies) */
 .video-label {
   font-family: var(--mono);
@@ -1219,37 +1204,29 @@ main {
     border-radius: 16px;
   }
 
-  /* ========== DRIVE EMBEDS ON MOBILE ==========
-     Google Drive's embedded player controls are unusable on mobile
-     (overlapping, too small for touch). Hide the iframe entirely and
-     show a large tap-to-open placeholder that opens the video in
-     Drive's native player, which works great on all phones. */
+  /* ========== DRIVE EMBEDS ON MOBILE ========== */
   .drive-embed-card {
-    padding: 0.5rem;
-    border-radius: 14px;
+    padding: 0;
+    border-radius: 0;
+    border: none;
     overflow: visible;
-  }
-
-  /* Hide the iframe on mobile — it's unusable */
-  .drive-embed-card .video-frame .drive-iframe {
-    display: none;
-  }
-
-  /* Show the mobile tap overlay instead */
-  .drive-embed-card .mobile-drive-overlay {
-    display: flex;
+    box-shadow: none;
   }
 
   .drive-embed-card .video-frame {
     aspect-ratio: 16 / 9;
     min-height: unset;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
+    height: auto;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .drive-embed-card .video-frame .drive-iframe {
+    border-radius: 0;
   }
 
   .drive-embed-card .video-card-actions {
-    padding: 0.5rem 0.15rem;
+    padding: 0.65rem;
     flex-direction: column;
     gap: 0.5rem;
   }
