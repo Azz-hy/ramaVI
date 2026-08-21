@@ -93,16 +93,25 @@
 
   // ---------- Video card builder (supports local videos and Drive iframes) ----------
   function buildVideoCard(video, targetId) {
-    const isDrive = video.type === "drive";
     const card = document.createElement("div");
-    card.className = "video-card" + (isDrive ? " drive-embed-card" : "");
-    // Give the video card its own anchor so links scroll directly to the player
-    const videoAnchorId = targetId ? "video-" + targetId : "";
-    if (videoAnchorId) card.id = videoAnchorId;
+    card.className = "video-card";
+    
+    let isDrive = video.type === "drive";
 
-    if (targetId) {
-      watchTotal++;
-      if (watched.has(targetId)) card.classList.add("is-watched");
+    // --- MAGICAL CONVERSION FOR TRUE NATIVE EXPERIENCE ---
+    // Extract the Google Drive ID and convert it to a direct video stream.
+    // This allows us to completely bypass Google Drive's buggy iframe player
+    // and use the standard Apple/Android native full-screen video player instead!
+    if (isDrive) {
+      const match = video.src.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        video.src = `https://drive.google.com/uc?export=download&id=${match[1]}`;
+        isDrive = false; // Treat as a flawless native <video> from now on
+      }
+    }
+
+    if (isDrive) {
+      card.classList.add("drive-embed-card");
     }
 
     const frame = document.createElement("div");
@@ -117,7 +126,7 @@
     }
 
     if (isDrive) {
-      // ---- Google Drive iframe embed ----
+      // ---- Google Drive iframe embed (Fallback if ID extraction fails) ----
       const iframe = document.createElement("iframe");
       iframe.className = "drive-iframe";
       iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
@@ -187,6 +196,13 @@
           vid.load();
         }
         vid.play();
+
+        // Automatically trigger true native fullscreen (pop-out) for the ultimate clean experience
+        if (vid.requestFullscreen) {
+          vid.requestFullscreen();
+        } else if (vid.webkitEnterFullscreen) {
+          vid.webkitEnterFullscreen(); // iPhone native full screen video player!
+        }
       });
       vid.addEventListener("play", () => {
         overlay.classList.add("is-hidden");
