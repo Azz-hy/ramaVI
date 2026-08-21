@@ -1216,16 +1216,22 @@ main {
   }
 
   .drive-embed-card .video-frame {
-    /* Increase padding to give Google Drive player controls room on mobile */
-    padding-bottom: 70%; 
+    /* Strict 16:9 aspect ratio */
+    padding-bottom: 56.25%; 
     height: 0;
     min-height: unset;
     border-radius: 0;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .drive-embed-card .video-frame .drive-iframe {
     border-radius: 0;
+    /* Trick Google Drive's player by rendering at 2x resolution */
+    width: 200%;
+    height: 200%;
+    /* Scale the 2x player back down by 50% to fit exactly into the frame */
+    transform: scale(0.5);
+    transform-origin: 0 0;
   }
 
   .drive-embed-card .video-card-actions {
