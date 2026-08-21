@@ -73,10 +73,33 @@
     updateWatchProgress();
   }
 
-  // ---------- Video card builder (lazy-loaded) ----------
+  // ---------- Copy-link toast ----------
+  const toast = document.createElement("div");
+  toast.className = "copy-toast";
+  toast.id = "copy-toast";
+  toast.textContent = "Link copied!";
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg || "Link copied!";
+    toast.classList.remove("is-visible");
+    void toast.offsetWidth; // force reflow to restart animation
+    toast.classList.add("is-visible");
+    setTimeout(() => toast.classList.remove("is-visible"), 2200);
+  }
+
+  // ---------- Single-play: pause all other videos ----------
+  const allVideos = [];
+
+  // ---------- Video card builder (supports local videos and Drive iframes) ----------
   function buildVideoCard(video, targetId) {
+    const isDrive = video.type === "drive";
     const card = document.createElement("div");
-    card.className = "video-card";
+    card.className = "video-card" + (isDrive ? " drive-embed-card" : "");
+    // Give the video card its own anchor so links scroll directly to the player
+    const videoAnchorId = targetId ? "video-" + targetId : "";
+    if (videoAnchorId) card.id = videoAnchorId;
+
     if (targetId) {
       watchTotal++;
       if (watched.has(targetId)) card.classList.add("is-watched");
@@ -85,66 +108,175 @@
     const frame = document.createElement("div");
     frame.className = "video-frame";
 
-    const vid = document.createElement("video");
-    vid.playsInline = true;
-    vid.controls = true;
-    vid.preload = "none";
-    vid.dataset.src = video.src;
-    if (video.poster) vid.poster = video.poster;
+    // --- Label (for multi-video appendices) ---
+    if (video.label) {
+      const labelEl = document.createElement("div");
+      labelEl.className = "video-label";
+      labelEl.textContent = video.label;
+      card.appendChild(labelEl);
+    }
 
-    const overlay = document.createElement("button");
-    overlay.className = "play-overlay";
-    overlay.setAttribute("aria-label", "Play video");
-    overlay.innerHTML = '<span class="play-icon"></span>';
+    if (isDrive) {
+      // ---- Google Drive iframe embed ----
+      const iframe = document.createElement("iframe");
+      iframe.className = "drive-iframe";
+      iframe.setAttribute("allow", "autoplay; encrypted-media; fullscreen");
+      iframe.setAttribute("allowfullscreen", "true");
+      iframe.setAttribute("frameborder", "0");
+      iframe.setAttribute("loading", "lazy");
+      iframe.dataset.src = video.src;
+      // Don't set src yet; lazy-load it when it scrolls near viewport
+      frame.appendChild(iframe);
+
+      // Lazy load
+      const lazyObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (!iframe.src) {
+                iframe.src = iframe.dataset.src;
+              }
+              lazyObserver.unobserve(card);
+            }
+          });
+        },
+        { rootMargin: "600px" }
+      );
+      lazyObserver.observe(card);
+
+    } else {
+      // ---- Local video file ----
+      const vid = document.createElement("video");
+      vid.playsInline = true;
+      vid.controls = true;
+      vid.preload = "none";
+      vid.dataset.src = video.src;
+      if (video.poster) vid.poster = video.poster;
+
+      const overlay = document.createElement("button");
+      overlay.className = "play-overlay";
+      overlay.setAttribute("aria-label", "Play video");
+      overlay.innerHTML = '<span class="play-icon"></span>';
+
+      overlay.addEventListener("click", () => {
+        if (!vid.src) {
+          vid.src = vid.dataset.src;
+          vid.load();
+        }
+        vid.play();
+      });
+      vid.addEventListener("play", () => {
+        overlay.classList.add("is-hidden");
+        // Pause every other video on the page
+        allVideos.forEach((v) => { if (v !== vid && !v.paused) v.pause(); });
+      });
+      allVideos.push(vid);
+      vid.addEventListener("pause", () => overlay.classList.remove("is-hidden"));
+      vid.addEventListener("ended", () => {
+        overlay.classList.remove("is-hidden");
+        markWatched(targetId, card);
+      });
+      let nearEndFired = false;
+      vid.addEventListener("timeupdate", () => {
+        if (nearEndFired || !vid.duration) return;
+        if (vid.currentTime / vid.duration >= 0.92) {
+          nearEndFired = true;
+          markWatched(targetId, card);
+        }
+      });
+
+      frame.appendChild(vid);
+      frame.appendChild(overlay);
+
+      // Lazily set the real src once the card scrolls near the viewport,
+      // so the browser can fetch metadata for the poster frame.
+      const lazyObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (!vid.src) {
+                vid.preload = "metadata";
+                vid.src = vid.dataset.src;
+              }
+              lazyObserver.unobserve(card);
+            }
+          });
+        },
+        { rootMargin: "400px" }
+      );
+      lazyObserver.observe(card);
+    }
 
     const badge = document.createElement("span");
     badge.className = "watched-badge";
     badge.textContent = "Watched";
 
-    overlay.addEventListener("click", () => {
-      if (!vid.src) {
-        vid.src = vid.dataset.src;
-        vid.load();
+    // Copy-link button
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "copy-link-btn";
+    copyBtn.setAttribute("aria-label", "Copy video link");
+    copyBtn.innerHTML =
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>' +
+        '<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>' +
+      '</svg>' +
+      '<span>Copy Link</span>';
+
+    copyBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      // Link directly to the video card on the page
+      const base = window.location.origin + window.location.pathname;
+      const videoUrl = videoAnchorId ? base + "#" + videoAnchorId : base;
+      navigator.clipboard.writeText(videoUrl).then(() => {
+        showToast("Link copied!");
+        copyBtn.classList.add("is-copied");
+        setTimeout(() => copyBtn.classList.remove("is-copied"), 1800);
+      }).catch(() => {
+        // Fallback for older browsers / insecure contexts
+        const ta = document.createElement("textarea");
+        ta.value = videoUrl;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        showToast("Link copied!");
+        copyBtn.classList.add("is-copied");
+        setTimeout(() => copyBtn.classList.remove("is-copied"), 1800);
+      });
+    });
+
+    // "Mark as Watched" button for Drive embeds (since we can't detect iframe playback)
+    if (isDrive) {
+      const markBtn = document.createElement("button");
+      markBtn.className = "mark-watched-btn";
+      if (watched.has(targetId)) {
+        markBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Watched</span>';
+        markBtn.classList.add("is-marked");
+      } else {
+        markBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg><span>Mark as Watched</span>';
       }
-      vid.play();
-    });
-    vid.addEventListener("play", () => overlay.classList.add("is-hidden"));
-    vid.addEventListener("pause", () => overlay.classList.remove("is-hidden"));
-    vid.addEventListener("ended", () => {
-      overlay.classList.remove("is-hidden");
-      markWatched(targetId, card);
-    });
-    let nearEndFired = false;
-    vid.addEventListener("timeupdate", () => {
-      if (nearEndFired || !vid.duration) return;
-      if (vid.currentTime / vid.duration >= 0.92) {
-        nearEndFired = true;
+      markBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         markWatched(targetId, card);
-      }
-    });
+        markBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Watched</span>';
+        markBtn.classList.add("is-marked");
+      });
 
-    frame.appendChild(vid);
-    frame.appendChild(overlay);
-    card.appendChild(frame);
-    card.appendChild(badge);
-
-    // Lazily set the real src once the card scrolls near the viewport,
-    // so the browser can fetch metadata for the poster frame.
-    const lazyObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (!vid.src) {
-              vid.preload = "metadata";
-              vid.src = vid.dataset.src;
-            }
-            lazyObserver.unobserve(card);
-          }
-        });
-      },
-      { rootMargin: "400px" }
-    );
-    lazyObserver.observe(card);
+      card.appendChild(frame);
+      card.appendChild(badge);
+      // Button row for drive embeds
+      const btnRow = document.createElement("div");
+      btnRow.className = "video-card-actions";
+      btnRow.appendChild(markBtn);
+      btnRow.appendChild(copyBtn);
+      card.appendChild(btnRow);
+    } else {
+      card.appendChild(frame);
+      card.appendChild(badge);
+      card.appendChild(copyBtn);
+    }
 
     return card;
   }
@@ -225,7 +357,16 @@
         '<p class="appendix-summary">' + escapeHtml(app.summary || "") + '</p>';
       item.appendChild(head);
 
-      if (app.video && app.video.src) {
+      // Support both single "video" and multiple "videos" array
+      if (app.videos && app.videos.length) {
+        const videosContainer = document.createElement("div");
+        videosContainer.className = "multi-video-grid";
+        app.videos.forEach((v, idx) => {
+          const subId = "app-" + app.id + "-" + (idx + 1);
+          videosContainer.appendChild(buildVideoCard(v, subId));
+        });
+        item.appendChild(videosContainer);
+      } else if (app.video && app.video.src) {
         item.appendChild(buildVideoCard(app.video, "app-" + app.id));
       }
 
@@ -241,6 +382,49 @@
     revealTargets.push(appendixSection);
   } else {
     appendixSection.hidden = true;
+  }
+
+  // ---------- Documentaries ----------
+  const documentariesRoot = document.getElementById("documentaries-root");
+  const documentarySection = document.getElementById("documentary-section");
+
+  if (cfg.documentaries && cfg.documentaries.length) {
+    const docLabel = document.createElement("p");
+    docLabel.className = "toc-group-label";
+    docLabel.textContent = "Documentaries";
+    tocInner.appendChild(docLabel);
+
+    cfg.documentaries.forEach((doc) => {
+      const item = document.createElement("div");
+      item.className = "documentary-item";
+      item.id = "doc-" + doc.id;
+
+      const head = document.createElement("div");
+      head.innerHTML =
+        '<div class="documentary-item-head">' +
+          '<span class="documentary-number">' + escapeHtml(doc.number) + '</span>' +
+          '<h4 class="documentary-title">' + escapeHtml(doc.title) + '</h4>' +
+        '</div>' +
+        (doc.titleKu ? '<p class="documentary-title-ku" dir="rtl">' + escapeHtml(doc.titleKu) + '</p>' : '') +
+        (doc.summary ? '<p class="documentary-summary">' + escapeHtml(doc.summary) + '</p>' : '');
+      item.appendChild(head);
+
+      if (doc.video && doc.video.src) {
+        item.appendChild(buildVideoCard(doc.video, "doc-" + doc.id));
+      }
+
+      documentariesRoot.appendChild(item);
+
+      const link = document.createElement("a");
+      link.className = "toc-link";
+      link.href = "#doc-" + doc.id;
+      link.dataset.target = "doc-" + doc.id;
+      link.innerHTML = '<span class="check" aria-hidden="true"></span><span class="n">' + escapeHtml(doc.number) + '</span><span>' + escapeHtml(doc.title) + '</span>';
+      tocInner.appendChild(link);
+    });
+    revealTargets.push(documentarySection);
+  } else {
+    documentarySection.hidden = true;
   }
 
   // ---------- References ----------

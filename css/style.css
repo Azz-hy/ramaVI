@@ -680,8 +680,175 @@ main {
   margin-left: 5px;
 }
 
-/* ---------- Appendices ---------- */
+/* ---------- Copy-link button ---------- */
+.copy-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--ink-dim);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease);
+}
+
+.copy-link-btn:hover {
+  color: var(--ink);
+  background: var(--card-hover);
+  border-color: rgba(47, 201, 193, 0.4);
+  transform: translateY(-1px);
+}
+
+.copy-link-btn.is-copied {
+  color: var(--ok);
+  border-color: var(--ok);
+  background: rgba(62, 207, 142, 0.08);
+}
+
+.copy-link-btn.is-copied span {
+  display: none;
+}
+
+.copy-link-btn.is-copied::after {
+  content: "Copied!";
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+.copy-link-btn svg {
+  flex-shrink: 0;
+  transition: stroke 0.2s ease;
+}
+
+/* ---------- Drive iframe embed ---------- */
+.video-frame .drive-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  background: #000;
+}
+
+/* Video label (shown for multi-video appendices like case studies) */
+.video-label {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0.6rem 0.4rem 0.2rem;
+}
+
+/* Action button row for drive embed cards */
+.video-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Mark as Watched button */
+.mark-watched-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--ink-dim);
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease);
+}
+
+.mark-watched-btn:hover {
+  color: var(--ink);
+  background: var(--card-hover);
+  border-color: rgba(62, 207, 142, 0.4);
+  transform: translateY(-1px);
+}
+
+.mark-watched-btn.is-marked {
+  color: var(--ok);
+  border-color: var(--ok);
+  background: rgba(62, 207, 142, 0.08);
+}
+
+.mark-watched-btn svg {
+  flex-shrink: 0;
+}
+
+/* Multi-video grid (e.g. Appendix A case studies) */
+.multi-video-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .multi-video-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.multi-video-grid .video-card {
+  padding: 0.65rem;
+  border-radius: 15px;
+}
+
+.multi-video-grid .video-frame {
+  border-radius: 10px;
+}
+
+.multi-video-grid .watched-badge {
+  top: 1.15rem;
+  right: 1.15rem;
+}
+
+/* ---------- Copy toast ---------- */
+.copy-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 100;
+  background: rgba(13, 18, 25, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--ok);
+  color: var(--ok);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.7rem 1.6rem;
+  border-radius: 12px;
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s var(--ease);
+}
+
+.copy-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Appendices & Documentaries ---------- */
 .appendix-section,
+.documentary-section,
 .references-section {
   max-width: 980px;
   margin: 0 auto;
@@ -757,6 +924,75 @@ main {
 }
 
 .appendix-item .watched-badge {
+  top: 1.15rem;
+  right: 1.15rem;
+}
+
+/* ---------- Documentaries ---------- */
+.documentary-section {
+  border-top: 1px solid var(--card-border);
+}
+
+.documentary-item {
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 1.7rem;
+  margin-bottom: 1.2rem;
+  background: var(--card);
+  transition: border-color 0.3s ease;
+}
+
+.documentary-item:hover {
+  border-color: rgba(230, 72, 95, 0.35);
+}
+
+.documentary-item-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.documentary-number {
+  font-family: var(--display);
+  font-weight: 800;
+  color: var(--accent-2);
+  font-size: 1.1rem;
+}
+
+.documentary-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0;
+  color: var(--ink);
+}
+
+.documentary-title-ku {
+  font-size: 0.83rem;
+  color: var(--ink-dim);
+  margin: 0 0 0.75rem;
+}
+
+.documentary-summary {
+  color: var(--ink-dim);
+  font-size: 0.96rem;
+  font-weight: 300;
+  line-height: 1.7;
+  margin: 0 0 1.1rem;
+}
+
+.documentary-item .video-card {
+  padding: 0.65rem;
+  border-radius: 15px;
+}
+
+.documentary-item .video-frame {
+  border-radius: 10px;
+}
+
+.documentary-item .watched-badge {
   top: 1.15rem;
   right: 1.15rem;
 }

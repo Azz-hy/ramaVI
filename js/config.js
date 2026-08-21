@@ -1,7 +1,7 @@
 /*
   Edit this file to customize the site's text and videos.
-  Drop your video files into the /videos folder using the exact file names
-  referenced below (or edit the "src" paths to match whatever you name them).
+  Videos can be local files in /videos or Google Drive embeds.
+  For Drive embeds, set type: "drive" and use the preview URL.
 */
 
 window.SITE_CONFIG = {
@@ -30,8 +30,7 @@ window.SITE_CONFIG = {
     { value: "30–50%", label: "Faster emergency response" },
   ],
 
-  // Main proposal sections — one video each. Drop files into /videos with
-  // these exact names, or change "src" to match your own file names.
+  // Main proposal sections — Google Drive embedded videos.
   sections: [
     {
       id: "executive-summary",
@@ -45,7 +44,7 @@ window.SITE_CONFIG = {
         { value: "2 km", label: "Erbil 100 Meter Road pilot" },
         { value: "Jun 11, 2026", label: "Proposal date" },
       ],
-      video: { src: "videos/01-executive-summary.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1yscbwy1OhQDhiVNNxrno7oha-lx2T5me/preview", type: "drive" },
     },
     {
       id: "the-crisis",
@@ -59,7 +58,7 @@ window.SITE_CONFIG = {
         { value: "+83.8%", label: "KR fatal crashes, 2011–16" },
         { value: "84%", label: "Kurdistan Region urbanization" },
       ],
-      video: { src: "videos/02-the-crisis.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1a1HhUZGC4AqS1sfSBZ8qHf8pBrVTDwGR/preview", type: "drive" },
     },
     {
       id: "science-of-response",
@@ -73,7 +72,7 @@ window.SITE_CONFIG = {
         { value: "48%", label: "Road deaths occurring on-scene" },
         { value: "+50%", label: "Of NYC's response-time growth" },
       ],
-      video: { src: "videos/03-science-of-response.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/14z_NgWGJxK2nB7zINR9aP3QJrDJVowSN/preview", type: "drive" },
     },
     {
       id: "the-solution",
@@ -87,7 +86,7 @@ window.SITE_CONFIG = {
         { value: "100%", label: "Automated — no manual control" },
         { value: "72 hr", label: "Solar battery autonomy" },
       ],
-      video: { src: "videos/04-the-solution.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1QfYMJdhHIIdhmcvKooPYBr42H-GuKVfV/preview", type: "drive" },
     },
     {
       id: "technical-architecture",
@@ -101,7 +100,7 @@ window.SITE_CONFIG = {
         { value: "AES-128", label: "End-to-end encryption" },
         { value: "10 km", label: "LoRa gateway range" },
       ],
-      video: { src: "videos/05-technical-architecture.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1CJG8K-JnEjWs4NLa1GZucDH8zKM5Peet/preview", type: "drive" },
     },
     {
       id: "pilot-project",
@@ -115,7 +114,7 @@ window.SITE_CONFIG = {
         { value: "2", label: "LoRa gateways (primary + backup)" },
         { value: "6", label: "GPS-equipped vehicles" },
       ],
-      video: { src: "videos/06-pilot-project.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1tNQvV6EuB1y-UWvy4tLOhuKEajwoPtMc/preview", type: "drive" },
     },
     {
       id: "budget-framework",
@@ -129,7 +128,7 @@ window.SITE_CONFIG = {
         { value: "15–30x", label: "Projected social ROI" },
         { value: "30–70%", label: "Cost cut via solar + LoRa" },
       ],
-      video: { src: "videos/07-budget-framework.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/16CgLTdOGrieI2j5S4kk6Lq4DmNu3tzad/preview", type: "drive" },
     },
     {
       id: "international-comparison",
@@ -143,7 +142,7 @@ window.SITE_CONFIG = {
         { value: "~1/500th", label: "Of Dubai's cost, for the pilot" },
         { value: "1st", label: "System of its kind in the region" },
       ],
-      video: { src: "videos/08-international-comparison.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1-YiAPiKOEQwhi3LIZfQ36Moyb3TMDGm9/preview", type: "drive" },
     },
     {
       id: "expected-benefits",
@@ -157,7 +156,7 @@ window.SITE_CONFIG = {
         { value: "200–500", label: "Lives saved / year (est.)" },
         { value: "−20–35%", label: "Fire damage reduction" },
       ],
-      video: { src: "videos/09-expected-benefits.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/18tLrEti_wOHmwC0WYDInADMPEX_d1V6g/preview", type: "drive" },
     },
     {
       id: "risk-assessment",
@@ -171,7 +170,7 @@ window.SITE_CONFIG = {
         { value: "STANDALONE", label: "Fallback mode on comms loss" },
         { value: "10%", label: "Budget contingency reserve" },
       ],
-      video: { src: "videos/10-risk-assessment.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1jLEQ6OGBRg0IBbxuvINS_AkfYYtHTsq2/preview", type: "drive" },
     },
     {
       id: "governance-structure",
@@ -184,7 +183,7 @@ window.SITE_CONFIG = {
         { value: "PM Office", label: "Strategic oversight" },
         { value: "1", label: "Joint technical committee proposed" },
       ],
-      video: { src: "videos/11-governance-structure.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1-z8mJ-xoGYHIljKFiRN5WDQJ06aH6xd1/preview", type: "drive" },
     },
     {
       id: "call-to-action",
@@ -197,11 +196,12 @@ window.SITE_CONFIG = {
         { value: "$155K–$310K", label: "Initial funding requested" },
         { value: "5", label: "Institutional approvals requested" },
       ],
-      video: { src: "videos/12-call-to-action.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1rKJD0Ge__LAngpxA-zF_6X-zSokbPOMU/preview", type: "drive" },
     },
   ],
 
   // Optional deep-dive appendices — each can carry its own video too.
+  // Appendix A has multiple case study videos via the "videos" array.
   appendices: [
     {
       id: "case-studies",
@@ -209,7 +209,13 @@ window.SITE_CONFIG = {
       title: "Case Studies",
       titleKu: "چیرۆکی ڕاستەقینەی ژیان",
       summary: "Real documented cases — from Baghdad ambulances blocked in traffic, to Erbil's new RameeGo GPS dispatch system, to Dubai and Abu Dhabi's measured response-time gains — showing both the human cost of the current gap and proof that smart systems save lives.",
-      video: { src: "videos/a-case-studies.mp4", poster: "" },
+      videos: [
+        { src: "https://drive.google.com/file/d/1ovBFtB4y_Z31n6ZcsFuolaXwQhikQ-MC/preview", type: "drive", label: "Case Study 1" },
+        { src: "https://drive.google.com/file/d/199bnwZOR6FYEeTTrh_ry1f9M3eDmOyDW/preview", type: "drive", label: "Case Study 2" },
+        { src: "https://drive.google.com/file/d/1kuKVZOM_UkUbItn86G2CuccMrlViptsc/preview", type: "drive", label: "Case Study 3" },
+        { src: "https://drive.google.com/file/d/1W41VfHHqpamiX3neGNS3RH47go0Rx05d/preview", type: "drive", label: "Case Study 4" },
+        { src: "https://drive.google.com/file/d/1ppbe_Qe0YpDeQONBo4v7mTFcgGhFyJk4/preview", type: "drive", label: "Case Study 5" },
+      ],
     },
     {
       id: "operations-research",
@@ -217,7 +223,7 @@ window.SITE_CONFIG = {
       title: "Operations Research Model",
       titleKu: "مۆدیلی تایبەتمەندی",
       summary: "A formal mathematical model of emergency response time, a queueing-theory analysis of corridor capacity, and a conservative lives-saved calculation built from Kurdistan Region census and medical-literature data.",
-      video: { src: "videos/b-operations-research.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1th5LwRKQxefIznnJ3KjXYL8KGtodYuAZ/preview", type: "drive" },
     },
     {
       id: "ai-in-ksecs",
@@ -225,7 +231,7 @@ window.SITE_CONFIG = {
       title: "Artificial Intelligence in KSECS",
       titleKu: "زیرەکی دەستکرد",
       summary: "The pilot runs as a deterministic, rule-based system, but KSECS is architected to grow into predictive route optimization, hotspot prediction, and eventually deep reinforcement learning-based corridor management as operational data accumulates.",
-      video: { src: "videos/c-ai-in-ksecs.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1A5uDh0fEEwUou2ZpB2ScNS2XXcaYd_vx/preview", type: "drive" },
     },
     {
       id: "local-manufacturing",
@@ -233,7 +239,67 @@ window.SITE_CONFIG = {
       title: "Local Manufacturing & Regional Development",
       titleKu: "بەرهەمهێنانی نەتەوەیی",
       summary: "A progressive localization strategy — from steel fabrication and mounting hardware in Phase 1 to full electronics assembly by Year 3 — is projected to create 50–200 direct manufacturing jobs and position Kurdistan as a regional technology exporter within 5 years.",
-      video: { src: "videos/d-local-manufacturing.mp4", poster: "" },
+      video: { src: "https://drive.google.com/file/d/1hQlPSCWgyFOxnqsufhIijbXvmlAG3ZEs/preview", type: "drive" },
+    },
+  ],
+
+  // Documentary videos — shown in their own section.
+  documentaries: [
+    {
+      id: "documentary-1",
+      number: "01",
+      title: "Documentary 1",
+      titleKu: "",
+      summary: "",
+      video: { src: "https://drive.google.com/file/d/1ExJAtxadyRhIa_AABlsSR73DcmRR0SMe/preview", type: "drive" },
+    },
+    {
+      id: "documentary-2",
+      number: "02",
+      title: "Documentary 2",
+      titleKu: "",
+      summary: "",
+      video: { src: "https://drive.google.com/file/d/1j8AXaADFcO7DKYzU-SstrEW7AbUFMAY2/preview", type: "drive" },
+    },
+    {
+      id: "documentary-3",
+      number: "03",
+      title: "Documentary 3",
+      titleKu: "",
+      summary: "",
+      video: { src: "https://drive.google.com/file/d/1IoC_dsPhiU3jIZlz8BjYfVQN6pKVIDNE/preview", type: "drive" },
+    },
+    {
+      id: "documentary-4",
+      number: "04",
+      title: "Documentary 4",
+      titleKu: "",
+      summary: "",
+      video: { src: "https://drive.google.com/file/d/1h5r09a87EWJCnD_CNbSWpNW9KPvVhnZH/preview", type: "drive" },
+    },
+    {
+      id: "documentary-5",
+      number: "05",
+      title: "Documentary 5",
+      titleKu: "",
+      summary: "",
+      video: { src: "https://drive.google.com/file/d/15Cp0DL-CBonn8Fh1k7iFv8aG_S_sRJ-I/preview", type: "drive" },
+    },
+    {
+      id: "documentary-6",
+      number: "06",
+      title: "Documentary 6",
+      titleKu: "",
+      summary: "",
+      video: { src: "https://drive.google.com/file/d/1HFWoE0OkBJ3WqqwzOilTK4zlr6i-vmko/preview", type: "drive" },
+    },
+    {
+      id: "film",
+      number: "07",
+      title: "Film",
+      titleKu: "",
+      summary: "",
+      video: { src: "https://drive.google.com/file/d/1muXew_v_vE8GxWoBcjtGNzV24YSOtReE/preview", type: "drive" },
     },
   ],
 
